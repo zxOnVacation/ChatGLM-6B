@@ -33,7 +33,8 @@ def hz():
 
 @app.route('/llm/stream_chat', methods=['POST'])
 def llm_chat():
-    try:
+    if 1:
+        print(request)
         print(dir(request))
         request_body = request.get_json()
         prompt = request_body.get('prompt')
@@ -55,5 +56,3 @@ def llm_chat():
                 "time": time}
             yield jsonify(answer)
         torch_gc()
-    except Exception as e:
-        logging.error(e)
