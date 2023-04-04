@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI, Request
 from transformers import AutoTokenizer, AutoModel
 import uvicorn, json, datetime
@@ -32,9 +34,8 @@ def create_item(request: Request):
 
     for response, history in model.stream_chat(tokenizer, prompt, history,
                                                max_length=max_length, top_p=top_p, temperature=temperature):
-        print(response)
-        print(history)
-        print('-' * 500)
+        logging.error(response)
+        logging.error(history)
         now = datetime.datetime.now()
         time = now.strftime("%Y-%m-%d %H:%M:%S")
         answer = {
@@ -44,8 +45,8 @@ def create_item(request: Request):
             "time": time
                 }
         log = "[" + time + "] " + '", prompt:"' + prompt + '", response:"' + repr(response) + '"'
-        print(log)
-        yield answer
+        logging.error(log)
+        return answer
     torch_gc()
 
 
