@@ -32,6 +32,9 @@ def create_item(request: Request):
 
     for response, history in model.stream_chat(tokenizer, prompt, history,
                                                max_length=max_length, top_p=top_p, temperature=temperature):
+        print(response)
+        print(history)
+        print('-' * 500)
         now = datetime.datetime.now()
         time = now.strftime("%Y-%m-%d %H:%M:%S")
         answer = {
