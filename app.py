@@ -39,7 +39,7 @@ def infer():
                 "history": history,
                 "status": 200,
                 "time": time}
-            yield answer
+            yield jsonify(answer)
 
     logging.info('starting inference')
     request_body = request.get_json()
