@@ -48,7 +48,7 @@ def infer():
     top_p = request_body.get('top_p', 0.7)
     temperature = request_body.get('temperature', 0.95)
 
-    yield app.response_class(streaming_infer(prompt, history, max_length, top_p, temperature), mimetype='application/json')
+    return app.response_class(streaming_infer(prompt, history, max_length, top_p, temperature), mimetype='application/json')
     #
     # torch.cuda.empty_cache()
     # torch.cuda.ipc_collect()
