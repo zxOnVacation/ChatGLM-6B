@@ -1,6 +1,7 @@
-import datetime
+
 import logging
 from flask import Flask, jsonify, request
+import datetime
 from transformers import AutoTokenizer, AutoModel
 import torch
 
@@ -27,6 +28,7 @@ def hz():
 @app.route('/llm/stream_chat', methods=['POST'])
 def llm_chat():
     if 1:
+        return 'ok'
         print(request)
         print(dir(request))
         request_body = request.get_json()
