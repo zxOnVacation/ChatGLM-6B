@@ -46,7 +46,7 @@ def infer():
                 "history": history,
                 "status": 200,
                 "time": time}
-            return answer
+            yield answer
 
     torch.cuda.empty_cache()
     torch.cuda.ipc_collect()
