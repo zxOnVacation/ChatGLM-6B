@@ -34,6 +34,7 @@ def hz():
 @app.route('/llm/stream_chat', methods=['POST'])
 def llm_chat():
     try:
+        print(dir(request))
         request_body = request.get_json()
         prompt = request_body.get('prompt')
         history = request_body.get('history', [])
