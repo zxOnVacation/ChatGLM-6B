@@ -24,6 +24,7 @@ app = FastAPI()
 def create_item(request: Request):
     global model, tokenizer
     json_post_raw = request.json()
+    logging.error(json_post_raw)
     json_post = json.dumps(json_post_raw)
     json_post_list = json.loads(json_post)
     prompt = json_post_list.get('prompt')
