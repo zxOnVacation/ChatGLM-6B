@@ -25,11 +25,10 @@ def hz():
     return 'ok'
 
 
-@app.route('/llm/stream_chat', methods=['POST'])
-def llm_chat():
+@app.route('/chatglm/infer', methods=['POST'])
+def infer():
     if 1:
-        return 'ok'
-        print(request)
+        print(request.args)
         print(dir(request))
         request_body = request.get_json()
         prompt = request_body.get('prompt')
