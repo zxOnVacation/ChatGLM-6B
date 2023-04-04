@@ -35,6 +35,7 @@ def llm_chat():
         max_length = request_body.get('max_length', 2048)
         top_p = request_body.get('top_p', 0.7)
         temperature = request_body.get('temperature', 0.95)
+        return 'ok'
 
         for response, history in model.stream_chat(tokenizer, prompt, history, max_length=max_length, top_p=top_p,
                                                    temperature=temperature):
