@@ -19,13 +19,6 @@ model = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True).ha
 model.eval()
 
 
-def torch_gc():
-    if torch.cuda.is_available():
-        with torch.cuda.device(CUDA_DEVICE):
-            torch.cuda.empty_cache()
-            torch.cuda.ipc_collect()
-
-
 @app.route('/hz')
 def hz():
     return 'ok'
@@ -55,4 +48,6 @@ def llm_chat():
                 "status": 200,
                 "time": time}
             yield jsonify(answer)
-        torch_gc()
+
+    torch.cuda.empty_cache()
+    torch.cuda.ipc_collect()
