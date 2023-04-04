@@ -19,9 +19,9 @@ app = FastAPI()
 
 
 @app.post("/")
-async def create_item(request: Request):
+def create_item(request: Request):
     global model, tokenizer
-    json_post_raw = await request.json()
+    json_post_raw = request.json()
     json_post = json.dumps(json_post_raw)
     json_post_list = json.loads(json_post)
     prompt = json_post_list.get('prompt')
