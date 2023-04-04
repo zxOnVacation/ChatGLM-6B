@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 import datetime
 from transformers import AutoTokenizer, AutoModel
 import torch
+import json
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(module)s - %(levelname)s - %(message)s')
@@ -39,7 +40,7 @@ def infer():
                 "history": history,
                 "status": 200,
                 "time": time}
-            yield jsonify(answer)
+            yield json.dumps(answer)
 
     logging.info('starting inference')
     request_body = request.get_json()
