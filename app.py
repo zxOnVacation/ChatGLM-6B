@@ -25,7 +25,7 @@ app = Flask(__name__)
 
 
 @app.route('/stream_chat', methods=['POST'])
-def chat():
+def chat(request):
     try:
         request_body = request.get_json()
         prompt = request_body.get('prompt')
