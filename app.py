@@ -33,6 +33,7 @@ def infer():
                                                    temperature=temperature):
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%d %H:%M:%S")
+            logging.info(response)
             yield response
 
     logging.info('starting inference')
