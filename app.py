@@ -31,8 +31,6 @@ def infer():
     def streaming_infer(prompt, history, max_length, top_p, temperature):
         for response, history in model.stream_chat(tokenizer, prompt, history, max_length=max_length, top_p=top_p,
                                                    temperature=temperature):
-            logging.error(response)
-            logging.error(history)
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%d %H:%M:%S")
             answer = {
@@ -50,7 +48,7 @@ def infer():
     top_p = request_body.get('top_p', 0.7)
     temperature = request_body.get('temperature', 0.95)
 
-    return app.response_class(streaming_infer(prompt, history, max_length, top_p, temperature), mimetype='application/json')
+    yield app.response_class(streaming_infer(prompt, history, max_length, top_p, temperature), mimetype='application/json')
     #
     # torch.cuda.empty_cache()
     # torch.cuda.ipc_collect()
