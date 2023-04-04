@@ -33,12 +33,7 @@ def infer():
                                                    temperature=temperature):
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%d %H:%M:%S")
-            answer = {
-                "response": response,
-                "history": history,
-                "status": 200,
-                "time": time}
-            yield json.dumps(answer)
+            yield response
 
     logging.info('starting inference')
     request_body = request.get_json()
