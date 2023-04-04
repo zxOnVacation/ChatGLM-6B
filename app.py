@@ -26,15 +26,8 @@ def hz():
 
 @app.route('/chatglm/infer', methods=['POST'])
 def infer():
-    if 1:
-        logging.info('starting inference')
-        request_body = request.get_json()
-        prompt = request_body.get('prompt')
-        history = request_body.get('history', [])
-        max_length = request_body.get('max_length', 2048)
-        top_p = request_body.get('top_p', 0.7)
-        temperature = request_body.get('temperature', 0.95)
 
+    def streaming_infer(prompt, history, max_length, top_p, temperature):
         for response, history in model.stream_chat(tokenizer, prompt, history, max_length=max_length, top_p=top_p,
                                                    temperature=temperature):
             logging.error(response)
@@ -48,5 +41,15 @@ def infer():
                 "time": time}
             yield answer
 
-    torch.cuda.empty_cache()
-    torch.cuda.ipc_collect()
+    logging.info('starting inference')
+    request_body = request.get_json()
+    prompt = request_body.get('prompt')
+    history = request_body.get('history', [])
+    max_length = request_body.get('max_length', 2048)
+    top_p = request_body.get('top_p', 0.7)
+    temperature = request_body.get('temperature', 0.95)
+
+    return app.response_class(streaming_infer(prompt, history, max_length, top_p, temperature))
+    #
+    # torch.cuda.empty_cache()
+    # torch.cuda.ipc_collect()
