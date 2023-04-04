@@ -28,6 +28,7 @@ def hz():
 @app.route('/chatglm/infer', methods=['POST'])
 def infer():
     if 1:
+        print('starting inference')
         request_body = request.get_json()
         prompt = request_body.get('prompt')
         history = request_body.get('history', [])
@@ -46,7 +47,7 @@ def infer():
                 "history": history,
                 "status": 200,
                 "time": time}
-            yield jsonify(answer)
+            yield answer
 
     torch.cuda.empty_cache()
     torch.cuda.ipc_collect()
