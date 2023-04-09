@@ -29,13 +29,14 @@ def hz():
 def infer():
 
     def streaming_infer(prompt, history, max_length, top_p, temperature):
-        already_get = ""
+        # already_get = ""
         for response, history in model.stream_chat(tokenizer, prompt, history, max_length=max_length, top_p=top_p,
                                                    temperature=temperature):
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%d %H:%M:%S")
-            text = response - already_get
-            already_get = response
+            # text = response - already_get
+            # already_get = response
+            text = response
             logging.info(text)
             yield json.dumps({"text": text, "time": time})
 
