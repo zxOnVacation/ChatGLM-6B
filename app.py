@@ -34,7 +34,7 @@ def infer():
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%d %H:%M:%S")
             logging.info(response)
-            yield {"text": response, "time": time}
+            yield json.dumps({"text": response, "time": time})
 
     logging.info('starting inference')
     request_body = request.get_json()
