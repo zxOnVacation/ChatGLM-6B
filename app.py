@@ -34,7 +34,7 @@ def infer():
             now = datetime.datetime.now()
             time = now.strftime("%Y-%m-%d %H:%M:%S")
             logging.info(response)
-            yield response
+            yield {"text": response, "time": time}
 
     logging.info('starting inference')
     request_body = request.get_json()
@@ -44,7 +44,7 @@ def infer():
     top_p = request_body.get('top_p', 0.7)
     temperature = request_body.get('temperature', 0.95)
 
-    return app.response_class(streaming_infer(prompt, history, max_length, top_p, temperature), mimetype='text/plain')
+    return app.response_class(streaming_infer(prompt, history, max_length, top_p, temperature), mimetype='application/json')
     #
     # torch.cuda.empty_cache()
     # torch.cuda.ipc_collect()
