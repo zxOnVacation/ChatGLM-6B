@@ -56,7 +56,7 @@ async def root():
     return {"message": "Starting ChatGLM-6B service"}
 
 
-@app.post("/llm/stream")
+@app.post("/llm/stream", response_model=Out)
 async def llm_stream(item: Item):
     contents = item.messages[0]
     print(contents)
