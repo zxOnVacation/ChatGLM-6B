@@ -48,7 +48,7 @@ async def llm_stream(request: Request):
             # initial_string = ""
             response = get_stream(prompt, history, max_length, top_p, temperature)
             logging.error(response)
-            yield response
+            yield list(response)
             # get_string = "".join(list(response))
             # logging.error(get_string)
             # if get_string == initial_string:
