@@ -69,7 +69,7 @@ async def llm_stream(item: Item):
 
     async def chat_generator():
         initial_string = ""
-        yield {"choices": [{"delta": {"role": "assistant"}, "index": 0, "finish_reason": None}]}
+        yield [{"delta": {"role": "assistant"}, "index": 0, "finish_reason": None}]
 
         for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                top_p=top_p, temperature=temperature):
