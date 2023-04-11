@@ -1,3 +1,4 @@
+from typing import List, Union, Dict
 import asyncio
 import logging
 from fastapi import FastAPI, Request
@@ -22,12 +23,29 @@ def torch_gc():
             torch.cuda.ipc_collect()
 
 
+class Message(BaseModel):
+    role: str
+    content: str
+    history: list = []
+
+
 class Item(BaseModel):
     model: str
-    messages: list
+    messages: List[Message]
     temperature: float = 1.0
     top_p: float = 1.0
     max_tokens: int = 2048
+
+
+class Choice(BaseModel):
+    delta: Dict[str, str]
+    index: int = 0
+    finish_reason: str = None
+
+
+#"choices":[{"delta":{"role":"assistant"},"index":0,"finish_reason":null}]
+class Out(BaseModel):
+    choices: List[Choice]
 
 
 app = FastAPI()
@@ -42,8 +60,8 @@ async def root():
 async def llm_stream(item: Item):
     contents = item.messages[0]
     print(contents)
-    prompt = contents["content"]
-    history = contents["history"]
+    prompt = contents.content
+    history = contents.history
     max_length = item.max_tokens
     top_p = item.top_p
     temperature = item.temperature
