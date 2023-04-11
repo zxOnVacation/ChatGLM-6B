@@ -42,8 +42,8 @@ async def root():
 async def llm_stream(item: Item):
     contents = item.messages[0]
     print(contents)
-    prompt = contents.content
-    history = contents.history
+    prompt = contents["content"]
+    history = contents["history"]
     max_length = item.max_tokens
     top_p = item.top_p
     temperature = item.temperature
