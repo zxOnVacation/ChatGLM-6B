@@ -38,19 +38,21 @@ async def llm_stream(request: Request):
     top_p = request_body.get('top_p', 0.7)
     temperature = request_body.get('temperature', 0.95)
 
-    # def get_stream(prompt, history, max_length, top_p, temperature):
-    #     for response, history in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
-    #                                                top_p=top_p,temperature=temperature):
-    #         yield response
-
     async def chat_generator():
         initial_string = ""
+
+        yield {"id": "chatcmpl-71UhVqhErBCHV6cOehjFJ0ZLtE8ye",
+               "object": "chat.completion.chunk",
+               "created": 1680590697,
+               "model": "gpt-3.5-turbo-0301",
+               "choices": [{"delta": {"role": "assistant"}, "index": 0, "finish_reason": None}]}
+
         for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                top_p=top_p, temperature=temperature):
             print(response)
-            text = response[len(initial_string):]
+            text = response[len(initial_string):-4]
             initial_string = response
-            yield text
+            yield {'text': text}
 
         # while True:
         #     # initial_string = ""
