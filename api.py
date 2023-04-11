@@ -5,6 +5,7 @@ from transformers import AutoTokenizer, AutoModel
 import uvicorn, json, datetime
 import torch
 from sse_starlette.sse import EventSourceResponse
+from pydantic import BaseModel
 
 
 DEVICE = "cuda"
@@ -21,6 +22,14 @@ def torch_gc():
             torch.cuda.ipc_collect()
 
 
+class Item(BaseModel):
+    model: str
+    messages: list
+    temperature: float = 1.0
+    top_p: float = 1.0
+    max_tokens: int = 2048
+
+
 app = FastAPI()
 
 
@@ -30,22 +39,18 @@ async def root():
 
 
 @app.post("/llm/stream")
-async def llm_stream(request: Request):
-    request_body = await request.json()
-    prompt = request_body.get('prompt')
-    history = request_body.get('history', [])
-    max_length = request_body.get('max_length', 2048)
-    top_p = request_body.get('top_p', 0.7)
-    temperature = request_body.get('temperature', 0.95)
+async def llm_stream(item: Item):
+    contents = item.messages[0]
+    prompt = contents.content
+    history = contents.history
+    max_length = item.max_tokens
+    top_p = item.top_p
+    temperature = item.temperature
+    model_name = item.model
 
     async def chat_generator():
         initial_string = ""
-
-        yield {"id": "chatcmpl-71UhVqhErBCHV6cOehjFJ0ZLtE8ye",
-               "object": "chat.completion.chunk",
-               "created": 1680590697,
-               "model": "gpt-3.5-turbo-0301",
-               "choices": [{"delta": {"role": "assistant"}, "index": 0, "finish_reason": None}]}
+        yield {"choices": [{"delta": {"role": "assistant"}, "index": 0, "finish_reason": None}]}
 
         for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                top_p=top_p, temperature=temperature):
