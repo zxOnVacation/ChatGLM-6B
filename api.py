@@ -41,6 +41,7 @@ async def root():
 @app.post("/llm/stream")
 async def llm_stream(item: Item):
     contents = item.messages[0]
+    print(contents)
     prompt = contents.content
     history = contents.history
     max_length = item.max_tokens
