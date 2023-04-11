@@ -38,27 +38,31 @@ async def llm_stream(request: Request):
     top_p = request_body.get('top_p', 0.7)
     temperature = request_body.get('temperature', 0.95)
 
-    def get_stream(prompt, history, max_length, top_p, temperature):
-        for response, history in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
-                                                   top_p=top_p,temperature=temperature):
-            yield response
+    # def get_stream(prompt, history, max_length, top_p, temperature):
+    #     for response, history in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
+    #                                                top_p=top_p,temperature=temperature):
+    #         yield response
 
     async def chat_generator():
-        while True:
-            # initial_string = ""
-            response = get_stream(prompt, history, max_length, top_p, temperature)
-            logging.error(response)
-            yield list(response)
-            # get_string = "".join(list(response))
-            # logging.error(get_string)
-            # if get_string == initial_string:
-            #     break
-            # else:
-            #     text = get_string[len(initial_string):]
-            #     yield {"text": text}
+        for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
+                                               top_p=top_p, temperature=temperature):
+            yield response
 
-            await asyncio.sleep(STREAM_DELAY)
-        torch_gc()
+        # while True:
+        #     # initial_string = ""
+        #     response = get_stream(prompt, history, max_length, top_p, temperature)
+        #     logging.error(response)
+        #     yield list(response)
+        #     # get_string = "".join(list(response))
+        #     # logging.error(get_string)
+        #     # if get_string == initial_string:
+        #     #     break
+        #     # else:
+        #     #     text = get_string[len(initial_string):]
+        #     #     yield {"text": text}
+        #
+        #     await asyncio.sleep(STREAM_DELAY)
+        # torch_gc()
     return EventSourceResponse(chat_generator())
 
 
