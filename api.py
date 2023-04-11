@@ -44,16 +44,13 @@ async def llm_stream(request: Request):
     #         yield response
 
     async def chat_generator():
-        a = "1，"
-        i = 3
+        initial_string = ""
         for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                top_p=top_p, temperature=temperature):
-            # print(response)
-            i += 1
-            b = a + str(i) + ','
-            a = b
-            print(b)
-            yield b
+            print(response)
+            text = response[len(initial_string):]
+            initial_string = response
+            yield text
 
         # while True:
         #     # initial_string = ""
