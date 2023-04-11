@@ -46,6 +46,7 @@ async def llm_stream(request: Request):
     async def chat_generator():
         for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                top_p=top_p, temperature=temperature):
+            print(response)
             yield response
 
         # while True:
