@@ -77,8 +77,9 @@ async def llm_stream(item: Item):
             print(text)
             initial_string = response
             yield [{"delta": {"content": text}, "index": 0, "finish_reason": None}]
+        yield [{"delta": {}, "index": 0, "finish_reason": "stop"}]
         torch_gc()
-        yield ['DONE']
+        yield '[DONE]'
 
     return EventSourceResponse(chat_generator())
 
