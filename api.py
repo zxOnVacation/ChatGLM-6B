@@ -73,26 +73,13 @@ async def llm_stream(item: Item):
 
         for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                top_p=top_p, temperature=temperature):
-            text = response[len(initial_string):]
+            text = response[len(initial_string):-4]
             print(text)
             initial_string = response
             yield [{"delta": {"content": text}, "index": 0, "finish_reason": None}]
+        torch_gc()
+        yield ['DONE']
 
-        # while True:
-        #     # initial_string = ""
-        #     response = get_stream(prompt, history, max_length, top_p, temperature)
-        #     logging.error(response)
-        #     yield list(response)
-        #     # get_string = "".join(list(response))
-        #     # logging.error(get_string)
-        #     # if get_string == initial_string:
-        #     #     break
-        #     # else:
-        #     #     text = get_string[len(initial_string):]
-        #     #     yield {"text": text}
-        #
-        #     await asyncio.sleep(STREAM_DELAY)
-        # torch_gc()
     return EventSourceResponse(chat_generator())
 
 
