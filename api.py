@@ -37,15 +37,15 @@ class Item(BaseModel):
     max_tokens: int = 2048
 
 
-class Choice(BaseModel):
-    delta: Dict[str, str]
-    index: int = 0
-    finish_reason: str = None
-
-
-#"choices":[{"delta":{"role":"assistant"},"index":0,"finish_reason":null}]
-class Out(BaseModel):
-    choices: List[Choice]
+# class Choice(BaseModel):
+#     delta: Dict[str, str]
+#     index: int = 0
+#     finish_reason: str = None
+#
+#
+# #"choices":[{"delta":{"role":"assistant"},"index":0,"finish_reason":null}]
+# class Out(BaseModel):
+#     choices: List[Choice]
 
 
 app = FastAPI()
