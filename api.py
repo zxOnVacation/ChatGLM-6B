@@ -73,10 +73,10 @@ async def llm_stream(item: Item):
 
         for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                top_p=top_p, temperature=temperature):
-            print(response)
-            text = response[len(initial_string):-4]
+            text = response[len(initial_string):]
+            print(text)
             initial_string = response
-            yield {'text': text}
+            yield [{"delta": {"content": text}, "index": 0, "finish_reason": None}]
 
         # while True:
         #     # initial_string = ""
