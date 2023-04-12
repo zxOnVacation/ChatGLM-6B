@@ -1,7 +1,7 @@
 from typing import List, Union, Dict
 import asyncio
 import logging
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from transformers import AutoTokenizer, AutoModel
 import uvicorn, json, datetime
 import torch
@@ -56,7 +56,7 @@ async def root():
     return {"message": "Starting ChatGLM-6B service"}
 
 
-@app.post("/llm/stream", response_model=Out)
+@app.post("/llm/stream", response_model=Response)
 async def llm_stream(item: Item):
     contents = item.messages[0]
     print(contents)
