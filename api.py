@@ -27,7 +27,6 @@ class Message(BaseModel):
 
 
 class Item(BaseModel):
-    model: str
     messages: List[Message]
     temperature: float = 1.0
     top_p: float = 1.0
@@ -50,19 +49,15 @@ async def llm_stream(item: Item):
     max_length = item.max_tokens
     top_p = item.top_p
     temperature = item.temperature
-    model_name = item.model
 
     async def chat_generator():
         try:
             initial_string = ""
-            yield [{"delta": {"role": "assistant"}, "index": 0, "finish_reason": None}]
-
             for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                    top_p=top_p, temperature=temperature):
                 text = response[len(initial_string):]
                 initial_string = response
-                yield [{"delta": {"content": text}, "index": 0, "finish_reason": None}]
-            yield [{"delta": {}, "index": 0, "finish_reason": "stop"}]
+                yield text
             torch_gc()
             yield '[DONE]'
         except Exception as e:
