@@ -57,7 +57,7 @@ async def llm_stream(item: Item):
                                                    top_p=top_p, temperature=temperature):
                 text = response[len(initial_string):]
                 initial_string = response
-                print(text.encode('utf-8'))
+                print(repr(text))
                 yield text
             torch_gc()
             yield '[DONE]'
