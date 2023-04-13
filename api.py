@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from transformers import AutoTokenizer, AutoModel
 import uvicorn
 import torch
-from sse_starlette.sse import EventSourceResponse
+from sse import EventSourceResponse
 from pydantic import BaseModel
 
 
