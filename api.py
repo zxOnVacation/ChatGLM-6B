@@ -49,6 +49,7 @@ async def llm_stream(item: Item):
     max_length = item.max_tokens
     top_p = item.top_p
     temperature = item.temperature
+    print(history)
 
     async def chat_generator():
         # try:
