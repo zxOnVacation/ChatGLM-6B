@@ -21,7 +21,7 @@ def torch_gc():
 
 
 class Message(BaseModel):
-    role: str
+    role: str = "user"
     content: str
     history: list = []
 
