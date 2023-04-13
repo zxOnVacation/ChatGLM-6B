@@ -57,15 +57,15 @@ async def llm_stream(item: Item):
                                                    top_p=top_p, temperature=temperature):
                 text = response[len(initial_string):]
                 initial_string = response
-                print(repr(text))
-                yield text
+                if text:
+                    yield text
             torch_gc()
             yield '[DONE]'
         except Exception as e:
             logging.error(e)
             raise HTTPException(status_code=500, detail=str(e))
 
-    return EventSourceResponse(chat_generator(), sep="")
+    return EventSourceResponse(chat_generator())
 
 
 if __name__ == '__main__':
