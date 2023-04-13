@@ -65,7 +65,7 @@ async def llm_stream(item: Item):
             logging.error(e)
             raise HTTPException(status_code=500, detail=str(e))
 
-    return EventSourceResponse(chat_generator())
+    return EventSourceResponse(chat_generator(), sep="")
 
 
 if __name__ == '__main__':
