@@ -51,19 +51,21 @@ async def llm_stream(item: Item):
     temperature = item.temperature
 
     async def chat_generator():
-        try:
+        # try:
+        if 1:
             initial_string = ""
             for response, his in model.stream_chat(tokenizer, prompt, history, max_length=max_length,
                                                    top_p=top_p, temperature=temperature):
                 text = response[len(initial_string):]
                 initial_string = response
+                print(text)
                 if text:
                     yield text
             torch_gc()
             yield '[DONE]'
-        except Exception as e:
-            logging.error(e)
-            raise HTTPException(status_code=500, detail=str(e))
+        # except Exception as e:
+        #     logging.error(e)
+        #     raise HTTPException(status_code=500, detail=str(e))
 
     return EventSourceResponse(chat_generator())
 
